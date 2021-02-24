@@ -1,0 +1,69 @@
+diff -rup sary-1.2.0.2005-03-30_073701/sary/builder.c sary-1.2.0/sary/builder.c
+--- sary-1.2.0.2005-03-30_073701/sary/builder.c	2005-01-28 17:50:24.000000000 +0900
++++ sary-1.2.0/sary/builder.c	2021-02-24 08:35:17.085570426 +0900
+@@ -45,7 +45,7 @@ struct _SaryBuilder{
+     gpointer		progress_func_data;
+ };
+ 
+-static SaryInt	index		(SaryBuilder	*builder, 
++static SaryInt	saryIntIndex		(SaryBuilder	*builder, 
+ 				 SaryProgress	*progress,
+ 				 SaryWriter	*writer);
+ static void	progress_quiet	(SaryProgress	*progress);
+@@ -124,7 +124,7 @@ sary_builder_index (SaryBuilder *builder
+ 			  builder->progress_func, 
+ 			  builder->progress_func_data);
+ 
+-    count = index(builder, progress, writer);
++    count = saryIntIndex(builder, progress, writer);
+ 
+     sary_progress_destroy(progress);
+     sary_writer_destroy(writer);
+@@ -219,7 +219,7 @@ sary_builder_connect_progress (SaryBuild
+ }
+ 
+ static SaryInt
+-index (SaryBuilder *builder, SaryProgress *progress, SaryWriter *writer)
++saryIntIndex (SaryBuilder *builder, SaryProgress *progress, SaryWriter *writer)
+ {
+     gchar *bof, *cursor;
+     SaryInt count;
+diff -rup sary-1.2.0.2005-03-30_073701/src/mksary.c sary-1.2.0/src/mksary.c
+--- sary-1.2.0.2005-03-30_073701/src/mksary.c	2004-06-12 03:57:28.000000000 +0900
++++ sary-1.2.0/src/mksary.c	2021-02-24 08:37:59.005681262 +0900
+@@ -59,7 +59,7 @@ CodesetFunc codeset_func_tab[] = {
+ static SaryIpointFunc	dispatch_codeset_func	(const gchar *codeset);
+ static SaryBuilder*	new_builder		(const gchar *file_name, 
+ 						 const gchar *array_name);
+-static void		index			(SaryBuilder *builder,
++static void		saryBuilderIndex			(SaryBuilder *builder,
+ 						 const gchar *file_name,
+ 						 const gchar *array_name);
+ static void		sort			(SaryBuilder *builder,
+@@ -149,7 +149,7 @@ new_builder (const gchar *file_name, con
+ }
+ 
+ static void
+-index (SaryBuilder *builder,
++saryBuilderIndex (SaryBuilder *builder,
+        const gchar *file_name, 
+        const gchar *array_name)
+ {
+@@ -186,7 +186,7 @@ index_and_sort (SaryBuilder *builder,
+ 		const gchar *file_name, 
+ 		const gchar *array_name)
+ {
+-    index(builder, file_name, array_name);
++    saryBuilderIndex(builder, file_name, array_name);
+     sort(builder, file_name, array_name);
+ }
+ 
+@@ -358,7 +358,7 @@ parse_options (int argc, char **argv)
+ 	    show_help();
+ 	    break;
+ 	case 'i':
+-	    process = index;
++	    process = saryBuilderIndex;
+ 	    break;
+ 	case 'l':
+ 	    ipoint_func = sary_ipoint_line;
